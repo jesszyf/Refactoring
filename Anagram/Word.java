@@ -8,6 +8,7 @@ public class Word  {
 		int ch;
 		aword = s;
 		total = 0;
+		//comment
 		s = s.toLowerCase();
 		for (int i = 'a'; i <= 'z'; i++) count[i-'a'] = 0;
 
