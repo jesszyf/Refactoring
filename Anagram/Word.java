@@ -21,21 +21,28 @@ public class Word  {
 		}
 	}
 
+	//if the word has the letter passed in
 	public boolean containsLetter(int j){
 		return count[j] != 0;
 	}
 
+	//basically a compare to method that gives more information about which word contains the least recurring letter
+	//and information if the words do not have the same amount of letters
 	public int MultiFieldCompare(Word t, int LeastCommonIndex)
 	{
+		//if this contains the least recurring letter and the other word does not contain the least recurring letter
 		if ( (containsLetter(LeastCommonIndex) ) &&  !(t.containsLetter(LeastCommonIndex)) )
 			return 1;
 		
+		//if this does not contain the least recurring letter and the other word does contain the least recurring letter
 		if ( !(containsLetter(LeastCommonIndex) ) &&  (t.containsLetter(LeastCommonIndex)) )
 			return -1;
 		
+		// if they do not contain the same number of letters
 		if ( t.total != total )
 			return (t.total - total);
 		
+		//returns 0 (true) if they do have the same number of least recurring letter and same number of letters
 		return (aword).compareTo(t.aword);
 	}
 }
