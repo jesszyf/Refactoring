@@ -41,6 +41,7 @@ public class anagram extends WordList implements UsefulConstants {
 		o.println("----" + anag + "----");
 	}
 
+	//gets candidate words depending on length, I think the conditions in this if statement might be redundant
 	static void getCandidates(Word d) {
 		for (int i = totCandidates = 0; i < totWords; i++)
 			if (   (    Dictionary[i].total >= MinimumLength   )
@@ -51,6 +52,7 @@ public class anagram extends WordList implements UsefulConstants {
 		
 	}
 	
+	//compares two words and sees if one of them has less of a specific letter
 	static boolean fewerOfEachLetter(int anagCount[], int entryCount[])
 	{
 		for (int i = 25; i >=0; i--)
@@ -76,10 +78,12 @@ public class anagram extends WordList implements UsefulConstants {
 		boolean enoughCommonLetters;
 		Word WordToPass = new Word("");
 		
+		//comparing the candidate word to the letters needed to make an anagram
 		for (i = StartAt; i < EndAt; i++) {
 			enoughCommonLetters = true;
 			for (j = 25; j >= 0 && enoughCommonLetters; j--)
 				if (d.count[j] < Candidate[i].count[j])
+					//can't be an anagram
 					enoughCommonLetters = false;
 			
 			if (enoughCommonLetters) {
@@ -99,6 +103,7 @@ public class anagram extends WordList implements UsefulConstants {
 				} else if (WordToPass.total < MinimumLength) {
 					; /* Don't call again */
 				} else {
+					//recursive call, find another word for the phrase if there are letters left
 					FindAnagram(WordToPass, WordArray, Level+1,i, totCandidates);
 				}
 			}
@@ -111,22 +116,30 @@ public class anagram extends WordList implements UsefulConstants {
 		int LeastCommonIndex=0, LeastCommonCount;
 		int i, j;
 		
+		//set all indexes in array to 0, pretty sure you don't have to do this
 		for (j = 25; j >= 0; j--) MasterCount[j] = 0;
+
+		//adds the number of letter usages in a word or phrase
 		for (i = totCandidates-1; i >=0; i--)
 			for (j = 25; j >=0; j--)
 				MasterCount[j] += Candidate[i].count[j];
 		
+		//probably just maxing out, still not totally sure what this is doing
 		LeastCommonCount = MAXWORDS * 5;
 		for (j = 25; j >= 0; j--)
+			//if there are still letters to spare in the phrase/if there's still enough of the least
+			//recurring letter/if word contains that letter
 			if (    MasterCount[j] != 0
 				 && MasterCount[j] < LeastCommonCount
 				 && d.containsLetter(j)  ) {
+				//store index of least recurring letter
 				LeastCommonCount = MasterCount[j];
 				LeastCommonIndex = j;
 			}
 		
 		quickSort(0, totCandidates-1, LeastCommonIndex );
 		
+		//should be sorted at this point and returns first candidate that contains the least used letter
 		for (i = 0; i < totCandidates; i++)
 			if (Candidate[i].containsLetter(LeastCommonIndex))
 				break;
@@ -142,6 +155,7 @@ public class anagram extends WordList implements UsefulConstants {
 		swap(left, (left+right)/2);
 		last = left;
 		for (i=left+1; i <=right; i++)  /* partition */
+			//word does not contain least recurring letter than word passed in
 			if (Candidate[i].MultiFieldCompare ( Candidate[left], LeastCommonIndex ) ==  -1 )
 				swap( ++last, i);
 		
@@ -150,6 +164,7 @@ public class anagram extends WordList implements UsefulConstants {
 		quickSort(last+1,right, LeastCommonIndex);
 	}
 	
+	//swaps the candidate words 
 	static void swap(int d1, int d2) {
 		Word tmp = Candidate[d1];
 		Candidate[d1] = Candidate[d2];
