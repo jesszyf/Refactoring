@@ -2,21 +2,23 @@
 public class Word  {
 	int count[] = new int[26];  // count of each letter in the word
 	int total;  // number of letters in the word
-	String aword;  // the word
+	String word;  // the word
 
 	public Word(String s) { // construct an entry from a string
-		int ch;
-		aword = s;
+		int characterIndex;
+		word = s;
 		total = 0;
 		//comment
 		s = s.toLowerCase();
-		for (int i = 'a'; i <= 'z'; i++) count[i-'a'] = 0;
+		for (int i = 0; i < 26; i++) {
+			count[i] = 0;
+		}
 
 		for (int i = s.length()-1; i >= 0; i--) {
-			ch = s.charAt(i) - 'a';
-			if (ch >= 0 && ch < 26) {
+			characterIndex = s.charAt(i) - 'a';
+			if (characterIndex >= 0 && characterIndex < 26) {
 				total++;
-				count[ch]++;
+				count[characterIndex]++;
 			}
 		}
 	}
@@ -36,7 +38,7 @@ public class Word  {
 		if ( t.total != total )
 			return (t.total - total);
 		
-		return (aword).compareTo(t.aword);
+		return (word).compareTo(t.word);
 	}
 }
 

@@ -21,11 +21,13 @@ public class anagram extends WordList implements UsefulConstants {
 			MinimumLength = Integer.parseInt(argv[1]);
 		
 		// word filename is optional 3rd argument
-		ReadDict( argv.length==3? argv[2] : "words.txt" );
-		DoAnagrams(argv[0]);
+		WordList wordList = new WordList();
+		wordList.readDict( argv.length==3? argv[2] : "words.txt" );
+		anagram anagramOne = new anagram(); 
+		anagramOne.DoAnagrams(argv[0]);
 	}
 	
-	static void DoAnagrams(String anag)
+	public void DoAnagrams(String anag)
 	{
 		Word myAnagram = new Word(anag);
 
@@ -41,8 +43,8 @@ public class anagram extends WordList implements UsefulConstants {
 		o.println("----" + anag + "----");
 	}
 
-	static void getCandidates(Word d) {
-		for (int i = totCandidates = 0; i < totWords; i++)
+	public void getCandidates(Word d) {
+		for (int i = totCandidates = 0; i < totalWords; i++)
 			if (   (    Dictionary[i].total >= MinimumLength   )
 				&& (    Dictionary[i].total + MinimumLength <= d.total
 					||  Dictionary[i].total == d.total)
@@ -51,23 +53,23 @@ public class anagram extends WordList implements UsefulConstants {
 		
 	}
 	
-	static boolean fewerOfEachLetter(int anagCount[], int entryCount[])
+	public boolean fewerOfEachLetter(int anagCount[], int entryCount[])
 	{
 		for (int i = 25; i >=0; i--)
 			if (entryCount[i] > anagCount[i]) return false;
 		return true;
 	}
 	
-	static void PrintCandidate()
+	public void PrintCandidate()
 	{
 		o.println("Candiate words:");
 		for (int i=0; i < totCandidates; i++)
-			o.print( Candidate[i].aword + ", " + ((i%4 ==3) ?"\n":" " ) );
+			o.print( Candidate[i].word + ", " + ((i%4 ==3) ?"\n":" " ) );
 		o.println("");
 		o.println();
 	}
 
-	static void FindAnagram(
+	public void FindAnagram(
 		Word d,
 		String WordArray[],
 		int Level, int StartAt, int EndAt) 
@@ -83,7 +85,7 @@ public class anagram extends WordList implements UsefulConstants {
 					enoughCommonLetters = false;
 			
 			if (enoughCommonLetters) {
-				WordArray[Level] = Candidate[i].aword;
+				WordArray[Level] = Candidate[i].word;
 				WordToPass.total = 0;
 				for (j = 25; j >= 0; j--) {
 					WordToPass.count[j] = (byte) (d.count[j] - Candidate[i].count[j] );
@@ -105,7 +107,7 @@ public class anagram extends WordList implements UsefulConstants {
 		}
 	}
 
-	static int sortCandidates(Word d)
+	public int sortCandidates(Word d)
 	{
 		int[] MasterCount=new int[26];
 		int LeastCommonIndex=0, LeastCommonCount;
@@ -134,7 +136,7 @@ public class anagram extends WordList implements UsefulConstants {
 		return i;
 	}
 
-	static void quickSort(int left, int right, int LeastCommonIndex)
+	public void quickSort(int left, int right, int LeastCommonIndex)
 	{
 		// standard quicksort from any algorithm book
 		int i, last;
@@ -150,7 +152,7 @@ public class anagram extends WordList implements UsefulConstants {
 		quickSort(last+1,right, LeastCommonIndex);
 	}
 	
-	static void swap(int d1, int d2) {
+	public void swap(int d1, int d2) {
 		Word tmp = Candidate[d1];
 		Candidate[d1] = Candidate[d2];
 		Candidate[d2] = tmp;
